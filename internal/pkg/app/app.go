@@ -31,5 +31,6 @@ func (a *App) Run() {
 	a.app.AddOperationPostHandler("/:id", api.SetResult)         // Обновление
 	a.app.AddOperationGetHandler("/:id", api.GetOperation)       // Получение
 
+	a.app.GetLogger().Info("Starting DB-service")
 	a.app.Start()
 }

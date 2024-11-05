@@ -47,6 +47,10 @@ func (r *RestAPI) RegisterOperation(c *gin.Context) {
 
 func (r *RestAPI) GetOperation(c *gin.Context) {
 	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id is empty"})
+		return
+	}
 	operation, err := r.worker.GetOperation(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -84,6 +88,10 @@ func (r *RestAPI) GetAllOperations(c *gin.Context) {
 
 func (r *RestAPI) GetVersion(c *gin.Context) {
 	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id is empty"})
+		return
+	}
 	version, err := r.worker.GetVersion(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -93,7 +101,11 @@ func (r *RestAPI) GetVersion(c *gin.Context) {
 }
 
 func (r *RestAPI) SetResult(c *gin.Context) {
-	id := c.DefaultQuery("id", "")
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "id is empty"})
+		return
+	}
 	data, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
