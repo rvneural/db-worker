@@ -2,6 +2,9 @@ package app
 
 import (
 	enpoint "db-worker/internal/endpoint/app"
+	dbworker "db-worker/internal/service/db"
+	generator "db-worker/internal/service/keygen"
+	api "db-worker/internal/transport/rest"
 )
 
 type App struct {
@@ -15,12 +18,18 @@ func New() *App {
 }
 
 func (a *App) Run() {
-	a.app.AddPostHandler("/", nil) // Регистрация
-	a.app.AddGetHandler("/", nil)  // Получение всех операций
 
-	a.app.AddOperationPostHandler("/:id", nil)        // Обновление
-	a.app.AddOperationGetHandler("/version/:id", nil) // Получение версии
-	a.app.AddOperationGetHandler("/:id", nil)         // Получение
+	worker := dbworker.New(a.app.GetLogger())
+	keygen := generator.New(35)
+	api := api.New(worker, keygen)
 
-	a.Run()
+	a.app.AddPostHandler("/", api.RegisterOperation) // Регистрация
+	a.app.AddGetHandler("/id", api.GetID)            // Получение ID операции
+	a.app.AddGetHandler("/", api.GetAllOperations)   // Получение всех операций
+
+	a.app.AddOperationGetHandler("/version/:id", api.GetVersion) // Получение версии
+	a.app.AddOperationPostHandler("/:id", api.SetResult)         // Обновление
+	a.app.AddOperationGetHandler("/:id", api.GetOperation)       // Получение
+
+	a.app.Start()
 }

@@ -20,6 +20,5 @@ type DBWorker interface {
 	GetResult(uniqID string) (dbResult DBResult, err error)
 	GetAllOperations(limit int, operation_type string) (dbOperations []DBResult, err error)
 	GetOperation(uniqID string) (dbResult DBResult, err error)
-	UpdateResult(uniqID string, data []byte) (err error)
 	GetVersion(uniqID string) (version int64, err error)
 }
