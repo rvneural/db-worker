@@ -75,14 +75,14 @@ func (r *RestAPI) GetAllOperations(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, operations)
+		c.JSON(http.StatusOK, gin.H{"operations": operations})
 	} else {
 		operation, err := r.worker.GetOperation(operation_id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, operation)
+		c.JSON(http.StatusOK, gin.H{"operations": []db.DBResult{operation}})
 	}
 }
 

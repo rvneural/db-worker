@@ -2,8 +2,6 @@ package keygen
 
 import (
 	"math/rand"
-	"strings"
-	"sync"
 )
 
 type Generator struct {
@@ -20,21 +18,25 @@ func New(maxLen int64) *Generator {
 
 func (g *Generator) Generate() string {
 	partLen := rand.Intn(6) + 3
-	builderParts := make([]strings.Builder, 4)
+	parts := make([]string, 4)
 
 	line := ""
 
-	wg := sync.WaitGroup{}
-	for _, builder := range builderParts {
-		wg.Add(1)
-		go func(builder *strings.Builder) {
-			defer wg.Done()
-			for i := 0; i < partLen; i++ {
-				builder.WriteRune(g.letters[rand.Intn(len(g.letters))])
-			}
-		}(&builder)
+	for i := range parts {
+		parts[i] = ""
 	}
-	wg.Wait()
-	line = builderParts[0].String() + "-" + builderParts[1].String() + "-" + builderParts[2].String() + "-" + builderParts[3].String()
+
+	for i := range parts {
+		for j := 0; j < partLen; j++ {
+			parts[i] += string(g.letters[rand.Intn(len(g.letters))])
+		}
+	}
+
+	for i := range parts {
+		line += parts[i]
+		if i < len(parts)-1 {
+			line += "-"
+		}
+	}
 	return line
 }

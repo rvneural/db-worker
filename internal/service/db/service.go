@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 type Worker struct {
@@ -74,7 +75,7 @@ func (w *Worker) SetResult(uniqID string, data []byte) error {
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE "+w.table_name+" SET data = $1, in_progress = $2, finish_date = IF(finish_date IS NULL, $3, finish_date), version = version + 1 WHERE operation_id = $4", data, false, time.Now(), uniqID)
+	_, err = db.Exec("UPDATE "+w.table_name+" SET data = $1, in_progress = $2, finish_date = $3, version = version + 1 WHERE operation_id = $4", data, false, time.Now(), uniqID)
 	if err != nil {
 		w.logger.Error("Update operation to DataBase", "error", err)
 	}
