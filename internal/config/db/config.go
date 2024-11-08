@@ -1,12 +1,14 @@
 package db
 
-const (
-	HOST     = "localhost"
-	PORT     = "5433"
-	LOGIN    = "postgres"
-	PASSWORD = "gMvEW3emrX7ue0agEjEa"
+import "os"
 
-	DB_NAME = "rvneural"
+var (
+	HOST     = os.Getenv("DB_HOST")
+	PORT     = os.Getenv("DB_PORT")
+	LOGIN    = os.Getenv("DB_LOGIN")
+	PASSWORD = os.Getenv("DB_PASSWORD")
 
-	RESULT_TABLE_NAME = "result"
+	DB_NAME = os.Getenv("DB_NAME")
+
+	RESULT_TABLE_NAME = os.Getenv("RESULT_TABLE_NAME")
 )
