@@ -2,5 +2,5 @@ package app
 
 const (
 	SERVER = ""
-	PORT   = "80"
+	PORT   = "7999"
 )
