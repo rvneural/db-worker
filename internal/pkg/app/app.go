@@ -23,6 +23,13 @@ func (a *App) Run() {
 	keygen := generator.New(35)
 	api := api.New(worker, keygen)
 
+	a.app.AddUsersGetHandler("/all", api.GetAllUsers)
+	a.app.AddUsersPostHandler("/email/", api.GetUser)
+	a.app.AddUsersPostHandler("/id/", api.GetUserByID)
+	a.app.AddUsersPostHandler("/compare", api.ComparePassword)
+	a.app.AddUsersPostHandler("/register", api.RegisterNewUser)
+	a.app.AddUsersPostHandler("/check/", api.CheckExists)
+
 	a.app.AddPostHandler("/", api.RegisterOperation) // Регистрация
 	a.app.AddGetHandler("/id", api.GetID)            // Получение ID операции
 	a.app.AddGetHandler("/", api.GetAllOperations)   // Получение всех операций

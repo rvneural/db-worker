@@ -17,6 +17,7 @@ import (
 type Endpoint struct {
 	router    *gin.Engine
 	operation *gin.RouterGroup
+	users     *gin.RouterGroup
 	logger    *slog.Logger
 }
 
@@ -28,6 +29,7 @@ func New() *Endpoint {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(gin.Recovery())
 	operationRouter := router.Group("/operation")
+	usersGroup := router.Group("/users")
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	router.Use(sloggin.New(logger))
@@ -38,6 +40,7 @@ func New() *Endpoint {
 	return &Endpoint{
 		router:    router,
 		operation: operationRouter,
+		users:     usersGroup,
 		logger:    logger,
 	}
 }
@@ -60,6 +63,18 @@ func (e *Endpoint) AddOperationPostHandler(pattern string, handler gin.HandlerFu
 
 func (e *Endpoint) AddOperationGetHandler(pattern string, handler gin.HandlerFunc) {
 	e.operation.GET(pattern, handler)
+}
+
+func (e *Endpoint) AddUsersPostHandler(pattern string, handler gin.HandlerFunc) {
+	e.users.POST(pattern, handler)
+}
+
+func (e *Endpoint) AddUsersGetHandler(pattern string, handler gin.HandlerFunc) {
+	e.users.GET(pattern, handler)
+}
+
+func (e *Endpoint) AddUsersPutHandler(pattern string, handler gin.HandlerFunc) {
+	e.users.PUT(pattern, handler)
 }
 
 func (e *Endpoint) Start() {

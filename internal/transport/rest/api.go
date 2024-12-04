@@ -30,6 +30,7 @@ func (r *RestAPI) RegisterOperation(c *gin.Context) {
 	type Resuest struct {
 		UniqID         string `json:"id"`
 		Operation_type string `json:"type"`
+		UserID         int    `json:"user_id"`
 	}
 	request := Resuest{}
 	err := c.BindJSON(&request)
@@ -37,7 +38,7 @@ func (r *RestAPI) RegisterOperation(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = r.worker.RegisterOperation(request.UniqID, request.Operation_type)
+	err = r.worker.RegisterOperation(request.UniqID, request.Operation_type, request.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -62,6 +63,7 @@ func (r *RestAPI) GetOperation(c *gin.Context) {
 func (r *RestAPI) GetAllOperations(c *gin.Context) {
 	limitStr := c.DefaultQuery("limit", "0")
 	operation_type := c.DefaultQuery("type", "")
+	str_user_id := c.DefaultQuery("userid", "")
 	operation_id := c.DefaultQuery("id", "")
 	if operation_id == "" {
 		var limit int = 0
@@ -70,7 +72,11 @@ func (r *RestAPI) GetAllOperations(c *gin.Context) {
 		if errL != nil {
 			limit = 0
 		}
-		operations, err := r.worker.GetAllOperations(limit, operation_type)
+		user_id, err := strconv.Atoi(str_user_id)
+		if err != nil {
+			user_id = 0
+		}
+		operations, err := r.worker.GetAllOperations(limit, operation_type, user_id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

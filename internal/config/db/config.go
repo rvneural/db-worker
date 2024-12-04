@@ -11,4 +11,5 @@ var (
 	DB_NAME = os.Getenv("DB_NAME")
 
 	RESULT_TABLE_NAME = os.Getenv("RESULT_TABLE_NAME")
+	USER_TABLE_NAME   = os.Getenv("USER_TABLE_NAME")
 )
