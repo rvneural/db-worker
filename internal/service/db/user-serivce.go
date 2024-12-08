@@ -154,7 +154,7 @@ func (w *Worker) GetAllUsers() ([]users.DBUser, error) {
 	}
 	defer db.Close()
 
-	query := `SELECT id, email, first_name, last_name FROM users`
+	query := `SELECT id, email, first_name, last_name, user_status FROM users ORDER BY id DESC`
 
 	var users []users.DBUser
 	err = db.Select(&users, query)
