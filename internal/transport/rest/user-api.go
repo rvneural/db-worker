@@ -2,6 +2,8 @@ package rest
 
 import (
 	"log"
+	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -120,17 +122,19 @@ func (r *RestAPI) GetUser(c *gin.Context) {
 }
 
 func (r *RestAPI) GetUserByID(c *gin.Context) {
-	type Request struct {
-		ID int `json:"id" binding:"required"`
-	}
-	model := Request{}
-	err := c.BindJSON(&model)
-	if err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+	str_id := c.Param("id")
+	if str_id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID is required"})
 		return
 	}
 
-	user, err := r.worker.GetUserByID(model.ID)
+	user_id, err := strconv.Atoi(str_id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	user, err := r.worker.GetUserByID(user_id)
 	if err != nil {
 		log.Println("Error getting user:", err)
 		c.JSON(500, gin.H{"error": err.Error()})

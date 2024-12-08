@@ -7,17 +7,18 @@ import (
 
 type DBResult struct {
 	ID             int64     `db:"id" json:"id"`
-	OPERATION_ID   string    `db:"operation_id" json:"operation_id"`
-	IN_PROGRESS    bool      `db:"in_progress" json:"in_progress"`
+	OPERATION_ID   string    `db:"operation_id" json:"operationID"`
+	IN_PROGRESS    bool      `db:"in_progress" json:"inProgress"`
 	DATA           []byte    `db:"data" json:"data"`
 	OPERATION_TYPE string    `db:"type" json:"type"`
-	CREATION_DATE  time.Time `db:"creation_date" json:"creation_date"`
-	FINISH_DATE    time.Time `db:"finish_date" json:"finish_date"`
+	CREATION_DATE  time.Time `db:"creation_date" json:"creationDate"`
+	FINISH_DATE    time.Time `db:"finish_date" json:"finishDate"`
 	VERSION        int64     `db:"version" json:"version"`
-	USER_ID        int       `db:"user_id" json:"user_id"`
-	FIRST_NAME     string    `db:"first_name" json:"first_name"`
-	LAST_NAME      string    `db:"last_name" json:"last_name"`
+	USER_ID        int       `db:"user_id" json:"userID"`
+	FIRST_NAME     string    `db:"first_name" json:"firstName"`
+	LAST_NAME      string    `db:"last_name" json:"lastName"`
 	EMAIL          string    `db:"email" json:"email"`
+	USER_STATUS    int       `db:"user_status" json:"userStatus"`
 }
 
 type DBWorker interface {

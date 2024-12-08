@@ -109,10 +109,10 @@ func (w *Worker) GetUserByEmail(email string) (*users.DBUser, error) {
 	}
 	defer db.Close()
 
-	query := `SELECT id, email, first_name, last_name FROM users WHERE email = $1 LIMIT 1`
+	query := `SELECT id, email, first_name, last_name, user_status FROM users WHERE email = $1 LIMIT 1`
 
 	var user users.DBUser
-	err = db.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName)
+	err = db.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.UserStatus)
 	if err != nil {
 		return nil, err
 	}
@@ -127,10 +127,10 @@ func (w *Worker) GetUserByID(id int) (*users.DBUser, error) {
 	}
 	defer db.Close()
 
-	query := `SELECT id, email, first_name, last_name FROM users WHERE id = $1 LIMIT 1`
+	query := `SELECT id, email, first_name, last_name, user_status FROM users WHERE id = $1 LIMIT 1`
 
 	var user users.DBUser
-	err = db.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName)
+	err = db.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.UserStatus)
 	if err != nil {
 		return nil, err
 	}

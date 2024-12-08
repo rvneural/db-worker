@@ -25,7 +25,7 @@ func (a *App) Run() {
 
 	a.app.AddUsersGetHandler("/all", api.GetAllUsers)
 	a.app.AddUsersPostHandler("/email/", api.GetUser)
-	a.app.AddUsersPostHandler("/id/", api.GetUserByID)
+	a.app.AddUsersGetHandler("/id/:id", api.GetUserByID)
 	a.app.AddUsersPostHandler("/compare", api.ComparePassword)
 	a.app.AddUsersPostHandler("/register", api.RegisterNewUser)
 	a.app.AddUsersPostHandler("/check/", api.CheckExists)

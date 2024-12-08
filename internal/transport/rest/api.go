@@ -74,7 +74,7 @@ func (r *RestAPI) GetAllOperations(c *gin.Context) {
 		}
 		user_id, err := strconv.Atoi(str_user_id)
 		if err != nil {
-			user_id = 0
+			user_id = -1
 		}
 		operations, err := r.worker.GetAllOperations(limit, operation_type, user_id)
 		if err != nil {

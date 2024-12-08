@@ -123,7 +123,7 @@ func (w *Worker) GetAllOperations(limit int, operation_type string, user_id int)
 	}
 	defer db.Close()
 
-	request := `SELECT o.id, o.operation_id, o.in_progress, o.type, o.creation_date, o.finish_date, o.version, o.user_id, o.data, u.first_name, u.last_name, u.email 
+	request := `SELECT o.id, o.operation_id, o.in_progress, o.type, o.creation_date, o.finish_date, o.version, o.user_id, o.data, u.first_name, u.last_name, u.email, u.user_status
 	FROM result o
 	JOIN users u ON o.user_id = u.id`
 
