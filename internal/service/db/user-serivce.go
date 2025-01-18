@@ -15,13 +15,13 @@ func (w *Worker) RegisterNewUser(email, password, firstName, lastName string) (i
 	}
 	defer db.Close()
 
-	query := `INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO users (email, password, first_name, last_name, user_status) VALUES ($1, $2, $3, $4, $5) RETURNING id`
 	password, err = w.hashPassword(password)
 	if err != nil {
 		return 0, err
 	}
 	var id int
-	err = db.QueryRow(query, email, password, firstName, lastName).Scan(&id)
+	err = db.QueryRow(query, email, password, firstName, lastName, 0).Scan(&id)
 	if err != nil {
 		return 0, err
 	}

@@ -152,5 +152,5 @@ func (r *RestAPI) GetAllUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, users)
+	c.JSON(200, gin.H{"users": users})
 }
